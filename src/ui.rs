@@ -147,12 +147,12 @@ fn draw_departures(f: &mut Frame<'_>, app: &App) {
     let block = Block::default()
         .title(popup_title)
         .borders(Borders::ALL)
-        .padding(Padding::new(2, 2, 1, 1))
+        .padding(Padding::new(2, 0, 1, 1))
         .style(Style::default());
 
     let table = display_departures_table(&app.departures).block(block);
 
-    let area = static_widgets::centered_rect(80, 69, f.size());
+    let area = static_widgets::centered_rect(100, 80, f.size());
     f.render_widget(Clear, area); //this clears out the background
     f.render_widget(table, area);
 }
