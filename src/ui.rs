@@ -147,7 +147,7 @@ fn draw_departures(f: &mut Frame<'_>, app: &App) {
     let block = Block::default()
         .title(popup_title)
         .borders(Borders::ALL)
-        .padding(Padding::new(2, 0, 1, 1))
+        .padding(Padding::new(1, 0, 1, 1))
         .style(Style::default());
 
     let table = display_departures_table(&app.departures).block(block);

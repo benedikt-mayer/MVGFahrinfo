@@ -110,10 +110,10 @@ pub fn display_departures_table(departures: &[api::DepartureInfo]) -> Table {
         .header(header)
         .style(Style::default().fg(Color::White))
         .widths(&[
+            Constraint::Percentage(18),
+            Constraint::Max(60),
             Constraint::Percentage(20),
-            Constraint::Max(50),
-            Constraint::Percentage(20),
-            Constraint::Min(10),
+            Constraint::Min(7),
         ]);
     t
 }
@@ -134,23 +134,11 @@ fn get_vehicle_label<'a>(label: &'a str, transport_type: &str) -> Line<'a> {
     let icon = match transport_type {
         "UBAHN" => vec![
             Span::styled(
-                format!(" U "),
-                Style::default().bg(Color::Rgb(29, 43, 83)).fg(Color::White),
-            ),
-            Span::raw(" "),
-            Span::styled(
                 format!(" {} ", label),
                 Style::default().bg(get_ubahn_color(label)).fg(Color::White),
             ),
         ],
         "BUS" => vec![
-            Span::styled(
-                format!(" B "),
-                Style::default()
-                    .bg(Color::Rgb(17, 93, 111))
-                    .fg(Color::White),
-            ),
-            Span::raw(" "),
             Span::styled(
                 format!(" {} ", label),
                 Style::default()
@@ -160,13 +148,6 @@ fn get_vehicle_label<'a>(label: &'a str, transport_type: &str) -> Line<'a> {
         ],
         "TRAM" => vec![
             Span::styled(
-                format!(" T "),
-                Style::default()
-                    .bg(Color::Rgb(231, 27, 30))
-                    .fg(Color::White),
-            ),
-            Span::raw(" "),
-            Span::styled(
                 format!(" {} ", label),
                 Style::default()
                     .bg(Color::Rgb(231, 27, 30))
@@ -174,13 +155,6 @@ fn get_vehicle_label<'a>(label: &'a str, transport_type: &str) -> Line<'a> {
             ),
         ],
         "SBAHN" => vec![
-            Span::styled(
-                format!(" S "),
-                Style::default()
-                    .bg(Color::Rgb(84, 253, 84))
-                    .fg(Color::Black),
-            ),
-            Span::raw(" "),
             Span::styled(
                 format!(" {} ", label),
                 Style::default().bg(get_sbahn_color(label)).fg(Color::White),
