@@ -20,7 +20,7 @@ use ratatui::prelude::{CrosstermBackend, Terminal};
 
 use crate::update::initiate_auto_refresh;
 
-pub type Frame<'a> = ratatui::Frame<'a, CrosstermBackend<std::io::Stderr>>; // alias for the frame type
+pub type Frame<'a> = ratatui::Frame<'a>; // alias for the frame type
 
 #[tokio::main]
 async fn main() -> Result<()> {

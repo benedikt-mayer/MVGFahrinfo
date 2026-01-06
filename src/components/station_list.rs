@@ -82,7 +82,7 @@ fn get_product_icon_spans(products: &Vec<String>) -> Vec<Span> {
 }
 
 pub fn display_departures_table(departures: &[api::DepartureInfo]) -> Table {
-    let header_cells = ["Vehicle", "Direction", "Platform", "ETA"]
+    let header_cells = ["Vehicle", "Direction", "ETA"]
         .iter()
         .map(|h| Cell::from(*h).style(Style::default().fg(Color::Gray)));
 
@@ -97,7 +97,6 @@ pub fn display_departures_table(departures: &[api::DepartureInfo]) -> Table {
         let cells = vec![
             Cell::from(get_vehicle_label(&item.label, &item.transport_type)),
             Cell::from(format!("{}", item.destination)),
-            Cell::from(get_platform_number(item.platform, index)),
             Cell::from(match get_minutes(item.realtime_departure_time) {
                 ETA::Minutes(minutes) => format!("{} min", minutes),
                 ETA::Now => "now".to_string(),
@@ -106,28 +105,18 @@ pub fn display_departures_table(departures: &[api::DepartureInfo]) -> Table {
         return Row::new(cells).height(1);
     });
 
-    let t = Table::new(rows)
-        .header(header)
-        .style(Style::default().fg(Color::White))
-        .widths(&[
+    let t = Table::new(
+        rows,
+        &[
             Constraint::Percentage(18),
             Constraint::Max(60),
             Constraint::Percentage(20),
             Constraint::Min(7),
-        ]);
+        ],
+    )
+    .header(header)
+    .style(Style::default().fg(Color::White));
     t
-}
-
-fn get_platform_number<'a>(platform: Option<i64>, index: usize) -> Span<'a> {
-    let bg = if index % 2 == 0 {
-        Color::White
-    } else {
-        Color::Gray
-    };
-    return match platform {
-        Some(p) => Span::styled(format!(" {} ", p), Style::default().bg(bg).fg(Color::Black)),
-        None => Span::styled(" ", Style::default().fg(Color::White)),
-    };
 }
 
 fn get_vehicle_label<'a>(label: &'a str, transport_type: &str) -> Line<'a> {

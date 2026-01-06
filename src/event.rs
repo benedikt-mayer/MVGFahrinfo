@@ -33,21 +33,25 @@ impl EventHandler {
                         match event::read().expect("unable to read event") {
                             CrosstermEvent::Key(e) => {
                                 if e.kind == event::KeyEventKind::Press {
-                                    sender.send(Event::Key(e))
+                                    if sender.send(Event::Key(e)).is_err() {
+                                        // receiver has been dropped; stop the loop
+                                        break;
+                                    }
                                 } else {
-                                    Ok(()) // ignore KeyEventKind::Release on windows
+                                    // ignore KeyEventKind::Release on windows
                                 }
                             }
                             _ => {
                                 // ignore other events
-                                Ok(())
                             }
                         }
-                        .expect("failed to send terminal event")
                     }
 
                     if last_tick.elapsed() >= tick_rate {
-                        sender.send(Event::Tick).expect("failed to send tick event");
+                        if sender.send(Event::Tick).is_err() {
+                            // receiver has been dropped; stop the loop
+                            break;
+                        }
                         last_tick = Instant::now();
                     }
                 }
