@@ -109,8 +109,7 @@ pub fn display_departures_table(departures: &[api::DepartureInfo]) -> Table {
         rows,
         &[
             Constraint::Percentage(18),
-            Constraint::Max(60),
-            Constraint::Percentage(20),
+            Constraint::Max(80),
             Constraint::Min(7),
         ],
     )
